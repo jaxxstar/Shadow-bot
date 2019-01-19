@@ -15,6 +15,7 @@ print('r = radius of the wheel\n')
 print('The governing equations are :')
 
 print('T = W/mu for no sliding')
+print('M = (mu*T/2 - mu*B*g/4 + m0*B*g/(B+2*m0) )/(m0/(R*(m0 + B)) - mu/(2*L))')
 print('T >= W*(l/x) for no toppling\n')
 
 cols = ['Thrust(kg)','x(m)','L(m)','mu','l(m)','m0(kg)','r(m)','min_W(kg)','max_W(kg)','M_torque']
