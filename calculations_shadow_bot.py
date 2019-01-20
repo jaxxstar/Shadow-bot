@@ -18,12 +18,12 @@ print('T = W/mu for no sliding')
 print('M = (mu*T/2 - mu*B*g/4 + m0*B*g/(B+2*m0) )/(m0/(R*(m0 + B)) - mu/(2*L))')
 print('T >= W*(l/x) for no toppling\n')
 
-cols = ['Thrust(kg)','x(m)','L(m)','mu','l(m)','m0(kg)','r(m)','min_W(kg)','max_W(kg)','M_torque']
+cols = ['Thrust(kg)','x(m)','L(m)','mu','l(m)','m0(kg)','r(m)','min_W(kg)','max_W(kg)','Motor_min','Motor_max']
 result = pd.DataFrame(columns = cols)
 counter = 0
 
 while(1):
-	T = float(input('Enter the Thrust of the motor,T in kg \t'))
+	T = float(input('Enter the Thrust of the EDF,T in kg \t'))
 	result.loc[counter,['Thrust(kg)']] = T
 	x = float(input('Enter the distance of application of thrust,x \t'))
 	result.loc[counter,['x(m)']] = x
@@ -42,12 +42,18 @@ while(1):
 	result.loc[counter,['min_W(kg)']] = W_no_sliding
 	W_no_toppling = (T * x)/l
 	result.loc[counter,['max_W(kg)']] = W_no_toppling
-	M = ( (mu*T)/2 - (mu*max(W_no_sliding,W_no_toppling)*9.81)/4 + (m0*max(W_no_sliding,W_no_toppling)*9.81)/(2*m0 + 							max(W_no_sliding,W_no_toppling)) )/( (m0/(r*(m0 + max(W_no_sliding,W_no_toppling)))) - mu/(2*L) )
 	
-	result.loc[counter,['M_torque']] = M
+	Motor_min = ( (mu*T)/2 - (mu*min(W_no_sliding,W_no_toppling)*9.81)/4 + (m0*min(W_no_sliding,W_no_toppling)*9.81)/(2*m0 + 							min(W_no_sliding,W_no_toppling)) )/( (m0/(r*(m0 + min(W_no_sliding,W_no_toppling)))) - mu/(2*L) )
+	
+	result.loc[counter,['Motor_min']] = Motor_min
+	
+	Motor_max = ( (mu*T)/2 - (mu*max(W_no_sliding,W_no_toppling)*9.81)/4 + (m0*max(W_no_sliding,W_no_toppling)*9.81)/(2*m0 + 							max(W_no_sliding,W_no_toppling)) )/( (m0/(r*(m0 + max(W_no_sliding,W_no_toppling)))) - mu/(2*L) )
+	
+	result.loc[counter,['Motor_max']] = Motor_max
 
 	print('The minimum weight of the bot is',str(1000 * max(W_no_sliding,W_no_toppling)),'g')
-	print('The minimum Motor Torque required to move the bot is',str(M))
+	print('The minimum Motor Torque required to move the bot is',str(Motor_min))
+	print('The maximum Motor Torque required to move the bot is',str(Motor_max))
 	
 	
 	
@@ -58,5 +64,5 @@ while(1):
 	else:
 		break
 		
-result.to_csv('result.csv',sep='\t')
+result.to_csv('result.csv',sep = '\t',encoding = 'UTF-8' )
 
