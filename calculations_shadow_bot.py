@@ -64,5 +64,5 @@ while(1):
 	else:
 		break
 		
-result.to_csv('result.csv',sep = '\t',encoding = 'UTF-8' )
+result.to_csv('result.csv',sep = ',',encoding = 'UTF-8' )
 
